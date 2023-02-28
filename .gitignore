@@ -1,0 +1,8 @@
+.idea
+# Project exclude paths
+/target/
+/.idea/
+/.idea_modules/
+*.iml
+*.ipr
+*.iws
