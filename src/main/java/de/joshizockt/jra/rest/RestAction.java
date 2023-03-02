@@ -1,8 +1,6 @@
 package de.joshizockt.jra.rest;
 
-import de.joshizockt.jra.requests.Request;
-import org.jetbrains.annotations.Nullable;
-
+import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -36,10 +34,7 @@ public class RestAction<T> {
      * @param then the consumer to call with the result, can be null
      */
     public void queue(Consumer<T> then) {
-        T t = complete();
-        if(then != null) {
-            then.accept(t);
-        }
+        queue(then, null);
     }
 
     /**
@@ -49,16 +44,18 @@ public class RestAction<T> {
      * @param error The consumer to execute if an error occurs, can be null
      */
     public void queue(@Nullable Consumer<T> then, @Nullable Consumer<Exception> error) {
-        try {
-            T t = complete();
-            if(then != null) {
-                then.accept(t);
+        new Thread(() -> {
+            try {
+                T t = complete();
+                if(then != null) {
+                    then.accept(t);
+                }
+            } catch (Exception e) {
+                if(error != null) {
+                    error.accept(e);
+                } else throw new RuntimeException(e);
             }
-        } catch (Exception e) {
-            if(error != null) {
-                error.accept(e);
-            } else throw new RuntimeException(e);
-        }
+        }).start();
     }
 
     public CompletableFuture<T> submit() {

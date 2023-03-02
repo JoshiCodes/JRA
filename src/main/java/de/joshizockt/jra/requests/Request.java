@@ -17,7 +17,7 @@ public abstract class Request<T> {
         this.body = new HashMap<>();
     }
 
-    public abstract T parse(RedditResponse response);
+    public abstract T parse(RedditResponse... response);
 
     protected void addData(String key, Object value) {
         body.put(key, value);

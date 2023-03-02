@@ -38,6 +38,8 @@ public class Link extends RedditObject {
     private final String url;
     private final String permalink;
 
+    private final String urlOverriddenByDest;
+
     private final double created;
     private final double createdUtc;
 
@@ -74,6 +76,8 @@ public class Link extends RedditObject {
         this.domain = JsonUtil.getString(data, "domain", null);
         this.url = JsonUtil.getString(data, "url", null);
         this.permalink = JsonUtil.getString(data, "permalink", null);
+
+        this.urlOverriddenByDest = JsonUtil.getString(data, "url_overridden_by_dest", null);
 
         this.created = JsonUtil.getDouble(data, "created", 0);
         this.createdUtc = JsonUtil.getDouble(data, "created_utc", 0);
@@ -211,6 +215,10 @@ public class Link extends RedditObject {
 
     public String getPermalink() {
         return permalink;
+    }
+
+    public String getUrlOverriddenByDest() {
+        return urlOverriddenByDest;
     }
 
     public double getCreated() {

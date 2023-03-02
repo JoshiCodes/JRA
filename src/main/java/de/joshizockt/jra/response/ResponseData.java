@@ -2,18 +2,28 @@ package de.joshizockt.jra.response;
 
 import com.google.gson.JsonObject;
 import de.joshizockt.jra.object.RedditObject;
+import de.joshizockt.jra.util.JsonUtil;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseData {
 
-    private String modhash;
-    private String dist;
-    private String after;
-    private String before;
+    private final String modhash;
+    private final String dist;
+    private final String after;
 
-    private JsonObject[] children;
+    private final JsonObject[] children;
+
+    ResponseData(JsonObject object) {
+        this.modhash = JsonUtil.getString(object, "modhash", null);
+        this.dist = JsonUtil.getString(object, "dist", null);
+        this.after = JsonUtil.getString(object, "after", null);
+        this.children = JsonUtil.getArray(object, "children", null)
+                .asList().stream().filter(e -> e instanceof JsonObject)
+                .map(e -> (JsonObject) e).toArray(JsonObject[]::new);
+    }
 
     public String getModhash() {
         return modhash;
@@ -25,10 +35,6 @@ public class ResponseData {
 
     public String getAfter() {
         return after;
-    }
-
-    public String getBefore() {
-        return before;
     }
 
     public JsonObject[] getChildren() {

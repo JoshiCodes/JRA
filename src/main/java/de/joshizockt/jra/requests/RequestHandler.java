@@ -1,18 +1,19 @@
 package de.joshizockt.jra.requests;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import de.joshizockt.jra.response.RedditResponse;
 import de.joshizockt.jra.rest.RestAction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RequestHandler {
 
@@ -33,17 +34,33 @@ public class RequestHandler {
                 if (request.hasData()) {
                     // TODO
                 }
-                RedditResponse response = new Gson().fromJson(
+
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                JsonElement element = gson.fromJson(
                         new BufferedReader(new InputStreamReader(connection.getInputStream())),
-                        RedditResponse.class
+                        JsonElement.class
                 );
-                if(response == null) {
-                    return null;
+                if(element.isJsonObject()) {
+                    RedditResponse response = gson.fromJson(element, RedditResponse.class);
+                    if(response == null) {
+                        return null;
+                    }
+                    return request.parse(response);
                 }
-                return request.parse(response);
+                if(element.isJsonArray()) {
+                    List<RedditResponse> responses = new ArrayList<>();
+                    for (JsonElement jsonElement : element.getAsJsonArray()) {
+                        responses.add(gson.fromJson(jsonElement, RedditResponse.class));
+                    }
+                    if(responses.isEmpty()) {
+                        return null;
+                    }
+                    return request.parse(responses.toArray(new RedditResponse[0]));
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            return null;
         });
     }
 
