@@ -29,6 +29,7 @@ public class Link extends RedditObject {
     private final int ups;
     private final int downs;
     private final int score;
+    private final int numComments;
 
     private final int thumbnailWidth;
     private final int thumbnailHeight;
@@ -46,6 +47,8 @@ public class Link extends RedditObject {
     private final boolean isVideo;
     private final boolean mediaOnly;
     private final boolean spoiler;
+
+    private final String author;
 
     private Link.Preview preview;
 
@@ -68,6 +71,7 @@ public class Link extends RedditObject {
         this.ups = JsonUtil.getInt(data, "ups", 0);
         this.downs = JsonUtil.getInt(data, "downs", 0);
         this.score = JsonUtil.getInt(data, "score", 0);
+        this.numComments = JsonUtil.getInt(data, "num_comments", 0);
 
         this.thumbnailWidth = JsonUtil.getInt(data, "thumbnail_width", 0);
         this.thumbnailHeight = JsonUtil.getInt(data, "thumbnail_height", 0);
@@ -85,6 +89,8 @@ public class Link extends RedditObject {
         this.isVideo = JsonUtil.getBoolean(data, "is_video", false);
         this.mediaOnly = JsonUtil.getBoolean(data, "media_only", false);
         this.spoiler = JsonUtil.getBoolean(data, "spoiler", false);
+
+        this.author = JsonUtil.getString(data, "author", null);
 
         JsonObject preview = JsonUtil.getObject(data, "preview", null);
         if(preview != null) {
@@ -193,6 +199,10 @@ public class Link extends RedditObject {
         return score;
     }
 
+    public int getNumComments() {
+        return numComments;
+    }
+
     public int getThumbnailWidth() {
         return thumbnailWidth;
     }
@@ -247,6 +257,10 @@ public class Link extends RedditObject {
 
     public boolean isSpoiler() {
         return spoiler;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public Preview getPreview() {
