@@ -13,7 +13,7 @@ You can also import it as a Maven Dependency:
 ```xml
 <dependency>
     <groupId>de.joshizockt</groupId>
-    <artifactId>jta</artifactId>
+    <artifactId>jra</artifactId>
     <version>1.0-alpha.1</version>
 </dependency>
 ```
