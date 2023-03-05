@@ -47,6 +47,7 @@ public class Link extends RedditObject {
     private final boolean isVideo;
     private final boolean mediaOnly;
     private final boolean spoiler;
+    private final boolean nsfw;
 
     private final String author;
 
@@ -89,6 +90,7 @@ public class Link extends RedditObject {
         this.isVideo = JsonUtil.getBoolean(data, "is_video", false);
         this.mediaOnly = JsonUtil.getBoolean(data, "media_only", false);
         this.spoiler = JsonUtil.getBoolean(data, "spoiler", false);
+        this.nsfw = JsonUtil.getBoolean(data, "over_18", false);
 
         this.author = JsonUtil.getString(data, "author", null);
 
@@ -257,6 +259,10 @@ public class Link extends RedditObject {
 
     public boolean isSpoiler() {
         return spoiler;
+    }
+
+    public boolean isNsfw() {
+        return nsfw;
     }
 
     public String getAuthor() {
