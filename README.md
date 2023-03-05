@@ -14,7 +14,7 @@ You can also import it as a Maven Dependency:
 <dependency>
     <groupId>de.joshizockt</groupId>
     <artifactId>jra</artifactId>
-    <version>1.0-alpha.3</version>
+    <version>1.0-alpha.4</version>
 </dependency>
 ```
 
